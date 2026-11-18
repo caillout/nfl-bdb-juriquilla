@@ -57,7 +57,8 @@ Stack fijo del evento (`.kiro/steering/rules.md`), sin dependencias adicionales:
 
 - **Backend:** Python 3.12, FastAPI, pandas, numpy. Todo se calcula en memoria al arrancar, en segundo plano (unos 25 s). `data/` es de solo lectura y no se escribe nada a disco.
 - **Frontend:** React 18, Vite 5, TypeScript, Tailwind CSS 3 y Recharts. La cancha está dibujada en SVG.
-- **Desarrollo:** con specs en `.kiro/specs/` (`offside-endpoint` y `jugada-evidencia`).
+- **IA (opcional):** Amazon Bedrock con un modelo Amazon Nova, vía boto3, para el narrador de jugadas. El modelo y la región se leen de `BEDROCK_MODEL_ID` y `AWS_REGION`. Las credenciales vienen del rol del hosting, o del `.env` local, que no se versiona. Si la IA falla, se usa una plantilla y el tablero sigue funcionando.
+- **Desarrollo:** con specs en `.kiro/specs/`: `offside-endpoint`, `jugada-evidencia`, `jugada-control`, `perfil-jugador` y `equipos`.
 
 ## Cómo correrlo
 
@@ -94,6 +95,7 @@ cd dashboard && npm run build
 | `GET /api/jugadores` | Los 130 rushers con 100+ snaps alineados |
 | `GET /api/jugadores/{nflId}` | Perfil del jugador |
 | `GET /api/equipos` | Rankings de defensas y ofensivas |
+| `GET /api/narracion/{gameId}/{playId}` | Narración tipo comentarista de la jugada: `{"texto", "fuente": "ia" \| "plantilla"}` |
 
 Mientras se calcula, las rutas `/api/...` responden `503` con `{"detail": {"estado": "calculando"}}` y el tablero reintenta solo.
 
