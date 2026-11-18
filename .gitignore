@@ -14,3 +14,6 @@ __pycache__/
 *.pem
 *.key
 .aws/
+
+# Datos del hackathon (pesados, solo lectura, no se versionan)
+data/

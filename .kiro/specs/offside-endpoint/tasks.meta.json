@@ -1,0 +1,261 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Crear `backend/offside_service.py` con constantes, `DatosNoDisponibles` y modelos Pydantic": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021666602
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021683792
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021768192
+      }
+    ],
+    "2.1 Implementar `frame_snap`, `rushers_en_snap`, `calcular_cruce` y `es_alineado`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021668318
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021771223
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021858800
+      }
+    ],
+    "2.4 Implementar `rango_velocidad`, presión individual y `ligar_offsides`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021668457
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021861962
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021964786
+      }
+    ],
+    "2.8 Implementar `metricas_por_rango`, `metricas_por_down`, `top10_scout` y `numero_clave`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021668786
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021968229
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022041586
+      }
+    ],
+    "3. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021668910
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022670334
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022841540
+      }
+    ],
+    "4.1 Implementar `cargar_datos` y `calcular_metricas`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669001
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022045662
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022330384
+      }
+    ],
+    "5.1 Actualizar `backend/main.py`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669122
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022332976
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022551105
+      }
+    ],
+    "6. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669292
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022844170
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795023301148
+      }
+    ],
+    "7.1 Verificar configuración de `vite.config.ts`, Tailwind 3 e `index.css`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669486
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021686443
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021767838
+      }
+    ],
+    "7.2 Crear `src/api.ts`, tipos de respuesta y `src/frase.ts`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669656
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021774329
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021857759
+      }
+    ],
+    "7.4 Crear `GraficaRangos`, `TarjetaClave` y `TablaScout`": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021669900
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021864092
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021964431
+      }
+    ],
+    "7.5 Integrar en `src/App.tsx` con estados de carga y error": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021670012
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022555910
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022651533
+      }
+    ],
+    "8. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021670149
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795023304929
+      },
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795023474642
+      }
+    ],
+    "1. Preparar el módulo de servicio y los modelos": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795021768508
+      }
+    ],
+    "2. Implementar funciones puras de cálculo": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022041840
+      }
+    ],
+    "4. Carga de datos y ensamblado de la respuesta": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022330685
+      }
+    ],
+    "5. Backend FastAPI": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022551541
+      }
+    ],
+    "7. Dashboard": [
+      {
+        "executionId": "7aa8dab5-a0b7-411d-82e8-15e730e289f0",
+        "chatSessionId": "sess_ecae7400-3b1e-4459-9eaf-9ecd2d0277f5",
+        "timestamp": 1795022652000
+      }
+    ]
+  }
+}
