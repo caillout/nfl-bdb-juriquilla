@@ -55,6 +55,15 @@ export function cargarPerfil(nflId: number): Promise<PerfilJugador> {
   return obtener<PerfilJugador>(`api/jugadores/${nflId}`)
 }
 
+export interface Narracion {
+  texto: string
+  fuente: 'ia' | 'plantilla'
+}
+
+export function cargarNarracion(gameId: number, playId: number): Promise<Narracion> {
+  return obtener<Narracion>(`api/narracion/${gameId}/${playId}`)
+}
+
 export function cargarEquipos(): Promise<EquiposResponse> {
   return obtener<EquiposResponse>('api/equipos')
 }

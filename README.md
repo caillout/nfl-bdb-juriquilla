@@ -32,7 +32,8 @@ Proyecto para el hackathon del NFL Big Data Bowl en la UNAM. Con los datos de tr
 5. **Top 10 scout:** rushers que más seguido salen en movimiento (s ≥ 1 yd/s, mínimo 100 snaps).
 6. **Perfil de jugador:** de los 130 rushers con 100+ snaps, con buscador. Incluye ficha, percentil de anticipación, presión anticipando contra sin anticipar, distribución de velocidad contra la liga y sus jugadas con offside enlazadas al visor.
 7. **Equipos:** qué defensas se anticipan más y qué ofensivas provocan más offsides. Kansas City provoca 9, más que nadie.
-8. **Duelo del domingo, MIN vs SF:** cómo llegaban esas dos defensas y ofensivas en 2021, con sus rushers que más se anticipan.
+8. **Narrador con IA:** en el visor, el botón "Narrar la jugada" pide a Amazon Nova (Bedrock) 2 o 3 frases de comentarista de TV, usando solo los datos calculados de la jugada y de su control. Si la IA no responde, se usa una narración con plantilla y el tablero sigue funcionando.
+9. **Duelo del domingo, MIN vs SF:** cómo llegaban esas dos defensas y ofensivas en 2021, con sus rushers que más se anticipan.
 
 Los equipos se identifican con sus siglas y colores. No se usan logos ni fotos, por ser marcas registradas y porque requerirían recursos externos.
 

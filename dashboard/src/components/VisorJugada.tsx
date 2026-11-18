@@ -4,6 +4,7 @@ import type { JugadaControl, JugadaDetalle, JugadaResumen } from '../types'
 import Campo, { altoNecesario } from './Campo'
 import GraficaVelocidad from './GraficaVelocidad'
 import InsigniaEquipo from './InsigniaEquipo'
+import NarradorJugada from './NarradorJugada'
 
 const VELOCIDADES = [0.25, 0.5, 1] as const
 
@@ -229,6 +230,8 @@ export default function VisorJugada({ pedido, elegibles, onElegirJugador }: Prop
             className="mt-2 w-full accent-nfl-red"
             aria-label="Momento de la jugada"
           />
+
+          <NarradorJugada key={claveJugada(detalle)} gameId={detalle.gameId} playId={detalle.playId} />
 
           <div className="mt-4 grid gap-4 lg:grid-cols-5">
             <div className="space-y-2 text-sm lg:col-span-2">

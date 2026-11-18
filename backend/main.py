@@ -21,6 +21,7 @@ cargar_env()
 from fastapi import FastAPI, HTTPException  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 
+from backend.narrador import narrar  # noqa: E402
 from backend.offside_service import (  # noqa: E402
     DatosNoDisponibles,
     EquiposResponse,
@@ -138,6 +139,16 @@ def perfil(nfl_id: int) -> dict:
     if p is None:
         raise HTTPException(status_code=404, detail="Ese jugador no tiene al menos 100 snaps alineados.")
     return p
+
+
+@app.get("/api/narracion/{game_id}/{play_id}")
+def narracion(game_id: int, play_id: int) -> dict:
+    """Narración tipo comentarista (IA opcional con Amazon Nova; plantilla si falla)."""
+    _exigir_listo()
+    detalle = (app.state.detalles or {}).get((game_id, play_id))
+    if detalle is None:
+        raise HTTPException(status_code=404, detail="No hay una jugada con offside con ese gameId y playId.")
+    return narrar((game_id, play_id), detalle)
 
 
 @app.get("/api/equipos", response_model=EquiposResponse)
