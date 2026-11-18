@@ -105,8 +105,8 @@ Mientras se calcula, las rutas `/api/...` responden `503` con `{"detail": {"esta
 
 ## Equipo
 
-- _Nombre — rol_
-- _Nombre — rol_
+- Norman Caillou Tinoco Rico
+- José Luis Garza Romero
 
 ## Datos
 
