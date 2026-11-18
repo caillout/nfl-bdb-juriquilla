@@ -7,6 +7,9 @@ node_modules/
 dist/
 __pycache__/
 
+# Datos del Big Data Bowl: se quedan en local, no se versionan
+data/
+
 # Llaves y credenciales: nunca al repositorio
 .env
 .env.*
