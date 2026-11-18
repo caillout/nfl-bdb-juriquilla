@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-nfl-night text-slate-900 antialiased;
+    /* Noche de estadio: luz desde arriba y líneas de yarda muy tenues */
+    background-image:
+      radial-gradient(ellipse at top, rgba(1, 51, 105, 0.85), transparent 60%),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 96px);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Tarjeta blanca con franja roja, como los gráficos de transmisión */
+  .tarjeta {
+    @apply rounded-xl border-t-4 border-nfl-red bg-white p-4 shadow-xl shadow-black/40 sm:p-5;
+  }
+  .titulo-seccion {
+    @apply font-titular text-lg font-black uppercase italic tracking-tight text-nfl-navy sm:text-xl;
+  }
+  .marcador {
+    font-variant-numeric: tabular-nums;
+  }
+}

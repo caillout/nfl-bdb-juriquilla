@@ -8,12 +8,12 @@ Esta función expone el endpoint `GET /api/offside` y un tablero que relacionan 
 
 - **Backend**: Aplicación FastAPI en `backend/main.py` que expone `app`.
 - **Dashboard**: Frontend React 18 + Vite + Tailwind 3 + Recharts en `dashboard/`.
-- **Data_Dir**: Carpeta `data/nfl-big-data-bowl-regional-event-data-main/nfl-big-data-bowl-regional-event-data-main/data/`, con `tracking/tracking_<gameId>.csv` (122 archivos), `pffScoutingData.csv`, `plays.csv` y `players.csv`.
+- **Data_Dir**: Primera carpeta dentro de `data/` (incluida `data/` misma) que contiene `plays.csv` y una subcarpeta `tracking/` con `tracking_<gameId>.csv` (122 archivos), además de `pffScoutingData.csv` y `players.csv`. Se busca en lugar de fijarse porque la profundidad cambia según cómo se descomprimió el zip (por ejemplo `data/nfl-big-data-bowl-regional-event-data-main/data/` o con la carpeta repetida).
 - **Offside_Service**: Módulo del Backend que calcula todas las métricas al arrancar y las mantiene en memoria.
 - **Frame_Snap**: `frameId` de la fila de tracking de una jugada `(gameId, playId)` cuyo `event` es `ball_snap` o `autoevent_ballsnap`.
 - **Rusher**: Jugador con `pff_role` igual a `Pass Rush` (R mayúscula) en `pffScoutingData.csv`.
 - **Rusher_Snap**: Tupla `(gameId, playId, nflId)` de un Rusher con posición en el Frame_Snap.
-- **Cruce**: `(x_rusher - bx) * signo`, donde `bx` es la `x` de la fila `team == "football"` en el Frame_Snap, y `signo` es -1 si `playDirection == "right"` y +1 si `playDirection == "left"`.
+- **Cruce**: `round((x_rusher - bx) * signo, 2)`, calculado en float64, donde `bx` es la `x` de la fila `team == "football"` en el Frame_Snap, y `signo` es -1 si `playDirection == "right"` y +1 si `playDirection == "left"`. Se redondea a 2 decimales (la precisión de `x` en el tracking) para que los valores exactamente en -1.5 o 0.5 no dependan de errores de punto flotante (119 rusher-snaps caen exactamente en -1.50).
 - **Rusher_Alineado**: Rusher_Snap con `-1.5 <= Cruce <= 0.5` (extremos incluidos).
 - **Velocidad_Snap**: Valor de la columna `s` del Rusher en el Frame_Snap, en yd/s, sin recalcular.
 - **Rango_Velocidad**: Categoría de Velocidad_Snap obtenida con `pd.cut(s, bins=[-0.01,0.25,0.5,1,2,10])`, cerrada a la derecha, con etiquetas `0-0.25`, `0.25-0.5`, `0.5-1`, `1-2` y `>2`.
@@ -98,14 +98,17 @@ Esta función expone el endpoint `GET /api/offside` y un tablero que relacionan 
 
 ### Requirement 6: Offsides por down
 
-**User Story:** Como analista, quiero el porcentaje de offsides por down, para ver si el down cambia el riesgo.
+**User Story:** Como analista, quiero la tasa de offsides por down, para ver si el down cambia el riesgo sin que lo distorsione cuántos snaps hay en cada down.
 
 #### Acceptance Criteria
 
 1. THE Offside_Service SHALL obtener el down de cada jugada desde `plays.csv`.
-2. THE Backend SHALL devolver por cada down `down`, `rusher_snaps`, `offsides` y `pct_offsides`.
-3. THE Offside_Service SHALL calcular `pct_offsides` como `offsides / rusher_snaps * 100`, donde `rusher_snaps` es el número de Rusher_Alineado de ese down.
-4. IF un down no tiene Rusher_Alineado, THEN THE Offside_Service SHALL devolver `pct_offsides` como `null` para ese down.
+2. THE Backend SHALL devolver siempre cuatro entradas, una por down 1, 2, 3 y 4 en ese orden, con `down`, `rusher_snaps`, `offsides`, `offsides_por_1000` y `pct_del_total`.
+3. THE Offside_Service SHALL calcular `offsides_por_1000` como `offsides / rusher_snaps * 1000`, donde `rusher_snaps` es el número de Rusher_Alineado de ese down (misma unidad que las métricas por rango).
+4. THE Offside_Service SHALL calcular `pct_del_total` como `offsides` del down entre la suma de `offsides` de los downs 1 a 4, por 100.
+5. IF un down no tiene Rusher_Alineado, THEN THE Offside_Service SHALL devolver `offsides_por_1000` como `null`; IF la suma de offsides de los downs 1 a 4 es 0, THEN `pct_del_total` SHALL ser `null`.
+6. THE Offside_Service SHALL excluir de `por_down` los Rusher_Alineado cuyo down no sea 1, 2, 3 o 4 (en los datos hay jugadas con `down = 0`) y SHALL reportarlos en `totales.sin_down_valido` con sus `rusher_snaps` y `offsides`.
+7. THE Dashboard SHALL mostrar una gráfica de barras de `offsides_por_1000` por down.
 
 ### Requirement 7: Número clave
 
@@ -145,3 +148,24 @@ Esta función expone el endpoint `GET /api/offside` y un tablero que relacionan 
 4. THE Backend SHALL usar solo las dependencias y versiones del stack fijo de `.kiro/steering/rules.md`.
 5. THE Backend SHALL no requerir IA ni servicios de AWS para calcular y servir `GET /api/offside`.
 6. THE Dashboard SHALL usar Tailwind CSS 3 sin la sintaxis de Tailwind 4.
+
+### Requirement 10: Cálculo en segundo plano
+
+**User Story:** Como integrante del equipo, quiero que el servidor responda `/health` desde el primer segundo, para que el hosting no lo dé por caído mientras se leen los 122 archivos de tracking (unos 15 s).
+
+#### Acceptance Criteria
+
+1. WHEN el Backend arranca, THE Backend SHALL iniciar el cálculo en un hilo en segundo plano y quedar listo para recibir peticiones sin esperar a que termine.
+2. WHILE el cálculo está en curso, THE Backend SHALL responder `GET /health` con `{"status": "ok"}`.
+3. WHILE el cálculo está en curso, THE Backend SHALL responder las rutas de datos bajo `/api` con código 503, el encabezado `Retry-After` y `detail = {"estado": "calculando", "mensaje": <texto>}`.
+4. IF el cálculo falla, THEN THE Backend SHALL responder las rutas de datos con 503 y `detail = {"estado": "error", "mensaje": <texto sin credenciales>}`.
+5. WHEN el Dashboard recibe 503 con `estado == "calculando"`, THE Dashboard SHALL mostrar "Calculando…" y reintentar automáticamente cada 3 s durante un máximo de 2 minutos.
+
+### Requirement 11: Análisis por presión en la gráfica de rangos
+
+**User Story:** Como espectador, quiero ver en la misma gráfica el riesgo (offsides por 1,000) y la recompensa (% de presión) de cada rango, para entender el dilema de anticipar el snap.
+
+#### Acceptance Criteria
+
+1. THE Dashboard SHALL mostrar en la gráfica de rangos barras de `offsides_por_1000` (eje izquierdo) y una línea de `pct_presion` (eje derecho), en el orden fijo de los rangos.
+2. THE Dashboard SHALL indicar el número de `rusher_snaps` de cada rango en el tooltip, para que se vea el tamaño de muestra de los rangos altos.

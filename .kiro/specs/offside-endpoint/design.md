@@ -46,10 +46,13 @@ flowchart LR
 
 Flujo de arranque (`lifespan`):
 
-1. Resolver `DATA_DIR` con `Path(__file__).resolve().parent.parent / "data" / "nfl-big-data-bowl-regional-event-data-main" / "nfl-big-data-bowl-regional-event-data-main" / "data"`.
-2. Leer `pffScoutingData.csv`, `plays.csv`, `players.csv`. Si alguno falta o no se lee, registrar el error (sin credenciales) y guardar `app.state.error = mensaje`.
-3. Por cada `tracking_<gameId>.csv`, leer solo las columnas necesarias; si falla, registrar el `gameId` y continuar.
-4. Calcular las métricas y guardar el diccionario en `app.state.resultado`.
+1. `lifespan` marca `app.state.estado = "calculando"`, lanza un hilo daemon con el cálculo y hace `yield` de inmediato (Requirement 10). `/health` responde desde el primer segundo.
+2. En el hilo: `resolver_data_dir()` busca dentro de `RAIZ / "data"` la primera carpeta (orden alfabético, máximo 4 niveles) que tenga `plays.csv` y `tracking/`. Si no existe, `DatosNoDisponibles`.
+3. Leer `pffScoutingData.csv`, `plays.csv`, `players.csv`. Si alguno falta o no se lee, registrar el error (sin credenciales) y guardar `app.state.estado = "error"` con el mensaje.
+4. Por cada `tracking_<gameId>.csv`, leer solo las columnas necesarias; si falla, registrar el `gameId` y continuar.
+5. Calcular las métricas, guardarlas en `app.state.resultado` y marcar `app.state.estado = "listo"`.
+
+Las rutas de datos consultan `app.state.estado`: `"calculando"` → 503 con `Retry-After: 5`; `"error"` → 503; `"listo"` → 200.
 
 Memoria: se procesa un juego a la vez. De cada archivo de tracking solo se conservan las filas del Frame_Snap (rushers y balón), no el tracking completo.
 
@@ -139,14 +142,15 @@ Detalles de cálculo:
     ]
   },
   "por_down": [
-    {"down": 1, "rusher_snaps": 0, "offsides": 0, "pct_offsides": null}
+    {"down": 1, "rusher_snaps": 0, "offsides": 0, "offsides_por_1000": null, "pct_del_total": null}
   ],
-  "totales": {"rusher_snaps": 0, "offsides": 0, "juegos_omitidos": []},
+  "totales": {"rusher_snaps": 0, "offsides": 0, "juegos_omitidos": [],
+              "sin_down_valido": {"rusher_snaps": 0, "offsides": 0}},
   "nota_umbrales": "El Número_Clave usa s > 0.5 yd/s y el Top_10_Scout usa s >= 1.0 yd/s por decisión deliberada."
 }
 ```
 
-`GET /api/offside` → 503 con `{"detail": "<mensaje descriptivo>"}` si falta o no se puede leer un archivo requerido. La misma nota de umbrales se documenta en el README.
+`GET /api/offside` → 503 con `{"detail": {"estado": "calculando" | "error", "mensaje": "<texto>"}}` mientras se calcula o si falta o no se puede leer un archivo requerido. La misma nota de umbrales se documenta en el README.
 
 ## Data Models
 
@@ -178,15 +182,21 @@ class Top10Scout(BaseModel):
     jugadores: list[JugadorScout]
 
 class PorDown(BaseModel):
-    down: int
+    down: int                       # 1..4, siempre las cuatro entradas
     rusher_snaps: int
     offsides: int
-    pct_offsides: float | None
+    offsides_por_1000: float | None
+    pct_del_total: float | None
+
+class SinDownValido(BaseModel):
+    rusher_snaps: int
+    offsides: int
 
 class Totales(BaseModel):
     rusher_snaps: int
     offsides: int
     juegos_omitidos: list[int]
+    sin_down_valido: SinDownValido
 
 class OffsideResponse(BaseModel):
     rangos: list[Rango]
@@ -237,7 +247,7 @@ For any conjunto de tracking y scouting sintéticos, el conjunto de Rusher_Snap 
 
 ### Property 2: Cruce y alineación
 
-For any `x`, `bx` y `playDirection` en `{"left", "right"}`, el Cruce es `(x - bx) * signo` con `signo = -1` para `right` y `+1` para `left`, y el Rusher_Snap es Rusher_Alineado si y solo si `-1.5 <= Cruce <= 0.5`, con ambos extremos incluidos.
+For any `x`, `bx` y `playDirection` en `{"left", "right"}`, el Cruce es `round((x - bx) * signo, 2)` con `signo = -1` para `right` y `+1` para `left`, y el Rusher_Snap es Rusher_Alineado si y solo si `-1.5 <= Cruce <= 0.5`, con ambos extremos incluidos. En particular, para `x` y `bx` con 2 decimales cuya diferencia es exactamente -1.50 o 0.50, el rusher siempre es alineado.
 
 **Validates: Requirements 2.4, 2.5**
 
@@ -273,7 +283,7 @@ For any conjunto de Rusher_Alineado, el Top_10_Scout contiene solo jugadores con
 
 ### Property 8: Offsides por down
 
-For any conjunto de Rusher_Alineado con down asignado desde `plays`, cada entrada de `por_down` cumple `pct_offsides = offsides / rusher_snaps * 100` (o `null` si `rusher_snaps == 0`), y la suma de `rusher_snaps` y de `offsides` sobre todos los downs es igual a los totales de Rusher_Alineado y de offsides ligados.
+For any conjunto de Rusher_Alineado con down asignado desde `plays`, `por_down` tiene exactamente cuatro entradas (downs 1 a 4 en orden), cada una cumple `offsides_por_1000 = offsides / rusher_snaps * 1000` (o `null` si `rusher_snaps == 0`), los `pct_del_total` suman 100 (salvo redondeo) cuando hay offsides, y la suma de `rusher_snaps` y de `offsides` de los cuatro downs más `totales.sin_down_valido` es igual a los totales de Rusher_Alineado y de offsides ligados.
 
 **Validates: Requirements 6.1, 6.2, 6.3, 6.4**
 

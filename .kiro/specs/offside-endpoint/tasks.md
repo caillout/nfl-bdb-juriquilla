@@ -118,6 +118,20 @@ Plan en Python (backend, FastAPI + pandas) y TypeScript (dashboard, React + Rech
 - [x] 8. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
+- [x] 9. Ajustes tras la revisión de datos
+  - [x] 9.1 Redondear el Cruce a 2 decimales en float64
+    - _Requirements: 2.4, 2.5_
+  - [x] 9.2 Resolver Data_Dir buscando `plays.csv` y `tracking/` dentro de `data/`
+    - _Requirements: 1.3_
+  - [x] 9.3 Rehacer `metricas_por_down` (downs 1-4, `offsides_por_1000`, `pct_del_total`, `sin_down_valido`)
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
+  - [x] 9.4 Cálculo en hilo de segundo plano con estados `calculando`/`listo`/`error`
+    - _Requirements: 10.1, 10.2, 10.3, 10.4_
+  - [x] 9.5 Dashboard: reintento con 503 `calculando`, gráfica por down y línea de % presión en la gráfica de rangos
+    - _Requirements: 6.7, 10.5, 11.1, 11.2_
+  - [x] 9.6 Pruebas pytest de las propiedades 1 a 9 y de la API (`backend/tests/`)
+    - _Requirements: 1.4, 1.5, 1.6, 1.7, 2.x, 3.x, 4.x, 5.x, 6.x, 7.x, 10.x_
+
 ## Notes
 
 - Las sub-tareas con `*` son opcionales (pytest, sin Hypothesis ni otras dependencias).
